@@ -23,17 +23,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.create = void 0;
+exports.create = exports.createBodyValidation = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const yup = __importStar(require("yup"));
+// yup.ObjectSchema<ICidade> indica que o esquema deve corresponder à estrutura definida pela interface ICidade.
+// .shape() Define a forma do objeto, especificando as validações para cada propriedade.
 const bodyValidation = yup.object().shape({
     nome: yup.string().required().min(3),
     estado: yup.string().required().min(2)
 });
-const create = async (req, res) => {
-    let validateData = undefined;
+const createBodyValidation = async (req, res, next) => {
     try {
-        validateData = await bodyValidation.validate(req.body, { abortEarly: false });
+        await bodyValidation.validate(req.body, { abortEarly: false });
+        return next();
     }
     catch (err) {
         const yupError = err;
@@ -43,13 +45,12 @@ const create = async (req, res) => {
                 return;
             errors[error.path] = error.message;
         });
-        return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({
-            errors: {
-                default: errors
-            }
-        });
+        return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({ errors: errors });
     }
-    console.log(validateData);
-    res.status(http_status_codes_1.StatusCodes.OK).send(validateData);
+};
+exports.createBodyValidation = createBodyValidation;
+const create = async (req, res) => {
+    console.log(req.body);
+    res.status(http_status_codes_1.StatusCodes.OK).send("Create");
 };
 exports.create = create;

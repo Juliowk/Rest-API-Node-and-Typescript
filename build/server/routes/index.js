@@ -9,4 +9,4 @@ exports.router = router;
 router.get("/", (req, res) => {
     return res.send("Hello Word!");
 });
-router.post("/cidades", controllers_1.CidadesController.create);
+router.post("/cidades", controllers_1.CidadesController.createBodyValidation, controllers_1.CidadesController.create);

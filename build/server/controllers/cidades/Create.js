@@ -28,17 +28,24 @@ const http_status_codes_1 = require("http-status-codes");
 const yup = __importStar(require("yup"));
 const bodyValidation = yup.object().shape({
     nome: yup.string().required().min(3),
+    estado: yup.string().required().min(2)
 });
 const create = async (req, res) => {
     let validateData = undefined;
     try {
-        validateData = await bodyValidation.validate(req.body);
+        validateData = await bodyValidation.validate(req.body, { abortEarly: false });
     }
-    catch (error) {
-        const yupError = error;
+    catch (err) {
+        const yupError = err;
+        const errors = {};
+        yupError.inner.forEach(error => {
+            if (!error.path)
+                return;
+            errors[error.path] = error.message;
+        });
         return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({
             errors: {
-                default: yupError.message
+                default: errors
             }
         });
     }

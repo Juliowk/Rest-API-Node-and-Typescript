@@ -9,6 +9,6 @@ router.get("/", (req, res) => {
      return res.send("Hello Word!");
 });
 
-router.post("/cidades", CidadesController.createBodyValidation, CidadesController.create);
+router.post("/cidades", CidadesController.createValidation, CidadesController.create);
 
 export { router }

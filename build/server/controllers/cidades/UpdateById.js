@@ -22,6 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateById = exports.updateValidation = void 0;
 const http_status_codes_1 = require("http-status-codes");
@@ -35,9 +44,9 @@ exports.updateValidation = (0, middlewares_1.validation)((getSchema) => ({
         nome: yup.string().required().min(3),
     })),
 }));
-const updateById = async (req, res) => {
+const updateById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.body);
     console.log(req.params);
     res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).send("Não implementado (UpdateByID)");
-};
+});
 exports.updateById = updateById;

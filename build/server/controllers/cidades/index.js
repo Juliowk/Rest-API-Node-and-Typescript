@@ -29,10 +29,4 @@ const getAll = __importStar(require("./GetAll"));
 const getById = __importStar(require("./GetByID"));
 const updateById = __importStar(require("./UpdateById"));
 const deleteById = __importStar(require("./DeleteById"));
-exports.CidadesController = {
-    ...create,
-    ...getAll,
-    ...getById,
-    ...updateById,
-    ...deleteById,
-};
+exports.CidadesController = Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, create), getAll), getById), updateById), deleteById);

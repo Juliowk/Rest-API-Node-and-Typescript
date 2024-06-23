@@ -23,16 +23,21 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.create = exports.createValidation = void 0;
+exports.updateById = exports.updateValidation = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const yup = __importStar(require("yup"));
 const middlewares_1 = require("../../shared/middlewares");
-exports.createValidation = (0, middlewares_1.validation)((getSchema) => ({
+exports.updateValidation = (0, middlewares_1.validation)((getSchema) => ({
+    params: getSchema(yup.object().shape({
+        id: yup.number().required().integer().moreThan(0),
+    })),
     body: getSchema(yup.object().shape({
-        nome: yup.string().required().min(3)
-    }))
+        nome: yup.string().required().min(3),
+    })),
 }));
-const create = async (req, res) => {
-    res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).send("Não implementado");
+const updateById = async (req, res) => {
+    console.log(req.body);
+    console.log(req.params);
+    res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).send("Não implementado (UpdateByID)");
 };
-exports.create = create;
+exports.updateById = updateById;

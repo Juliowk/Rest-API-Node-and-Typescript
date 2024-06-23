@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
-import yup, { Schema } from 'yup';
+import yup from 'yup';
 
 type TProperty = 'body' | 'header' | 'params' | 'query'
 type TALLSchemas = Record<TProperty, yup.ObjectSchema<any>>

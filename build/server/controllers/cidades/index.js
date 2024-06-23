@@ -25,6 +25,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CidadesController = void 0;
 const create = __importStar(require("./Create"));
+const getAll = __importStar(require("./GetAll"));
+const getById = __importStar(require("./GetByID"));
+const updateById = __importStar(require("./UpdateById"));
+const deleteById = __importStar(require("./DeleteById"));
 exports.CidadesController = {
     ...create,
+    ...getAll,
+    ...getById,
+    ...updateById,
+    ...deleteById,
 };

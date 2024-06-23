@@ -23,16 +23,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.create = exports.createValidation = void 0;
+exports.getAll = exports.getAllValidation = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const yup = __importStar(require("yup"));
 const middlewares_1 = require("../../shared/middlewares");
-exports.createValidation = (0, middlewares_1.validation)((getSchema) => ({
-    body: getSchema(yup.object().shape({
-        nome: yup.string().required().min(3)
+exports.getAllValidation = (0, middlewares_1.validation)((getSchema) => ({
+    query: getSchema(yup.object().shape({
+        page: yup.number().optional().moreThan(0),
+        limit: yup.number().optional().moreThan(0),
+        filter: yup.string().optional()
     }))
 }));
-const create = async (req, res) => {
-    res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).send("Não implementado");
+const getAll = async (req, res) => {
+    console.log(req.query);
+    res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).send("Não implementado (GetAll)");
 };
-exports.create = create;
+exports.getAll = getAll;

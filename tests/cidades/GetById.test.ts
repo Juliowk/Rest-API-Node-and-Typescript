@@ -15,10 +15,10 @@ describe('Cidades - GetById', () => {
      });
 
      it('Tenta buscar registro que não existe', async () => {
-
+          
           const res = await testServer.get('/cidades/9999').send();
           expect(res.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
           expect(res.body).toHaveProperty('errors.default');
      });
-     
+
 });

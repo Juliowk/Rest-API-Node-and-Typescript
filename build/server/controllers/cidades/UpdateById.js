@@ -36,6 +36,7 @@ exports.updateById = exports.updateValidation = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const yup = __importStar(require("yup"));
 const middlewares_1 = require("../../shared/middlewares");
+;
 exports.updateValidation = (0, middlewares_1.validation)((getSchema) => ({
     params: getSchema(yup.object().shape({
         id: yup.number().required().integer().moreThan(0),

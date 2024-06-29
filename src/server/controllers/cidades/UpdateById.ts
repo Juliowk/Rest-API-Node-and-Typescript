@@ -2,20 +2,19 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 import { validation } from "../../shared/middlewares";
+import { ICidade } from "../../database/models";
 
 interface IParamProps {
      id?: number;
 }
 
-interface IbodyProps {
-     nome: string;
-}
+interface IBodyProps extends Omit<ICidade, 'id'> { };
 
 export const updateValidation = validation((getSchema) => ({
      params: getSchema<IParamProps>(yup.object().shape({
           id: yup.number().required().integer().moreThan(0),
      })),
-     body: getSchema<IbodyProps>(yup.object().shape({
+     body: getSchema<IBodyProps>(yup.object().shape({
           nome: yup.string().required().min(3),
      })),
 }));

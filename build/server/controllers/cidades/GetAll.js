@@ -36,6 +36,8 @@ exports.getAll = exports.getAllValidation = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const yup = __importStar(require("yup"));
 const middlewares_1 = require("../../shared/middlewares");
+const Cidades_1 = require("../../database/providers/Cidades");
+;
 exports.getAllValidation = (0, middlewares_1.validation)((getSchema) => ({
     query: getSchema(yup.object().shape({
         page: yup.number().optional().moreThan(0),
@@ -45,12 +47,15 @@ exports.getAllValidation = (0, middlewares_1.validation)((getSchema) => ({
 }));
 const getAll = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.setHeader('access-control-expose-headers', 'x-total-count');
-    res.setHeader('x-total-count', 1);
-    res.status(http_status_codes_1.StatusCodes.OK).json([
-        {
-            id: 1,
-            nome: "Recife",
-        },
-    ]);
+    const cidades = yield Cidades_1.CidadesProvider.getAll();
+    if (cidades instanceof Error) {
+        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: cidades.message
+            }
+        });
+    }
+    res.setHeader('x-total-count', cidades.length.toString());
+    return res.status(http_status_codes_1.StatusCodes.OK).json(cidades);
 });
 exports.getAll = getAll;

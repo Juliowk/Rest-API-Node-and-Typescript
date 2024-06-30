@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import * as yup from 'yup';
 import { validation } from "../../shared/middlewares";
+import { IParam } from "../../database/models";
+import { CidadesProvider } from "../../database/providers/Cidades";
+import * as yup from 'yup';
 
-interface IParamProps {
-     id?: number;
-}
+interface IParamProps extends IParam { }
 
 export const getByIdValidation = validation((getSchema) => ({
      params: getSchema<IParamProps>(yup.object().shape({
@@ -14,15 +14,15 @@ export const getByIdValidation = validation((getSchema) => ({
 }));
 
 export const getById = async (req: Request<IParamProps>, res: Response) => {
-     if (Number(req.params.id) === 9999) {
+     const cidade = await CidadesProvider.getById(Number(req.params.id));
+
+     if (cidade instanceof Error) {
           return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                errors: {
-                    default: 'Registro não encontrado',
-               },
+                    default: cidade.message
+               }
           });
      }
-     res.status(StatusCodes.OK).json({
-          id: req.params.id,
-          nome: 'Recife',
-     });
+
+     return res.status(StatusCodes.OK).json(cidade);
 };

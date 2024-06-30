@@ -36,6 +36,8 @@ exports.updateById = exports.updateValidation = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const yup = __importStar(require("yup"));
 const middlewares_1 = require("../../shared/middlewares");
+const Cidades_1 = require("../../database/providers/Cidades");
+;
 ;
 exports.updateValidation = (0, middlewares_1.validation)((getSchema) => ({
     params: getSchema(yup.object().shape({
@@ -46,13 +48,10 @@ exports.updateValidation = (0, middlewares_1.validation)((getSchema) => ({
     })),
 }));
 const updateById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (Number(req.params.id) === 9999) {
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({
-            errors: {
-                default: 'Registro não encontrado',
-            },
-        });
+    const cidade = yield Cidades_1.CidadesProvider.updateById(Number(req.params.id), req.body.nome);
+    if (cidade instanceof Error) {
+        res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ erros: { default: cidade.message } });
     }
-    res.status(http_status_codes_1.StatusCodes.NO_CONTENT).send();
+    res.status(http_status_codes_1.StatusCodes.OK).json();
 });
 exports.updateById = updateById;

@@ -35,8 +35,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.create = exports.createValidation = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const middlewares_1 = require("../../shared/middlewares");
-const yup = __importStar(require("yup"));
 const Cidades_1 = require("../../database/providers/Cidades");
+const yup = __importStar(require("yup"));
 ;
 exports.createValidation = (0, middlewares_1.validation)((getSchema) => ({
     body: getSchema(yup.object().shape({

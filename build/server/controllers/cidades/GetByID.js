@@ -34,24 +34,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getById = exports.getByIdValidation = void 0;
 const http_status_codes_1 = require("http-status-codes");
-const yup = __importStar(require("yup"));
 const middlewares_1 = require("../../shared/middlewares");
+const Cidades_1 = require("../../database/providers/Cidades");
+const yup = __importStar(require("yup"));
 exports.getByIdValidation = (0, middlewares_1.validation)((getSchema) => ({
     params: getSchema(yup.object().shape({
         id: yup.number().required().integer().moreThan(0),
     })),
 }));
 const getById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (Number(req.params.id) === 9999) {
+    const cidade = yield Cidades_1.CidadesProvider.getById(Number(req.params.id));
+    if (cidade instanceof Error) {
         return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
-                default: 'Registro não encontrado',
-            },
+                default: cidade.message
+            }
         });
     }
-    res.status(http_status_codes_1.StatusCodes.OK).json({
-        id: req.params.id,
-        nome: 'Recife',
-    });
+    return res.status(http_status_codes_1.StatusCodes.OK).json(cidade);
 });
 exports.getById = getById;

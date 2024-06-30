@@ -36,19 +36,17 @@ exports.deleteById = exports.deleteValidation = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const yup = __importStar(require("yup"));
 const middlewares_1 = require("../../shared/middlewares");
+const Cidades_1 = require("../../database/providers/Cidades");
 exports.deleteValidation = (0, middlewares_1.validation)((getSchema) => ({
     params: getSchema(yup.object().shape({
         id: yup.number().required().integer().moreThan(0),
     })),
 }));
 const deleteById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (Number(req.params.id) === 9999) {
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({
-            errors: {
-                default: 'Registro não encontrado',
-            },
-        });
+    const cidade = yield Cidades_1.CidadesProvider.deleteById(Number(req.params.id));
+    if (cidade instanceof Error) {
+        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ errors: { default: cidade.message } });
     }
-    res.status(http_status_codes_1.StatusCodes.NO_CONTENT).send();
+    return res.status(http_status_codes_1.StatusCodes.NO_CONTENT).send();
 });
 exports.deleteById = deleteById;

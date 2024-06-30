@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { validation } from "../../shared/middlewares";
 import { ICidade } from "../../database/models";
-import * as yup from 'yup';
 import { CidadesProvider } from "../../database/providers/Cidades";
+import * as yup from 'yup';
 
 interface IBodyProps extends Omit<ICidade, 'id'> { };
 

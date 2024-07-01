@@ -48,7 +48,7 @@ exports.updateValidation = (0, middlewares_1.validation)((getSchema) => ({
     })),
 }));
 const updateById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cidade = yield Cidades_1.CidadesProvider.updateById(Number(req.params.id), req.body.nome);
+    const cidade = yield Cidades_1.CidadesProvider.updateById(Number(req.params.id), req.body);
     if (cidade instanceof Error) {
         res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ erros: { default: cidade.message } });
     }

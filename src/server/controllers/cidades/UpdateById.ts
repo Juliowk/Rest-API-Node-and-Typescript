@@ -17,8 +17,8 @@ export const updateValidation = validation((getSchema) => ({
      })),
 }));
 
-export const updateById = async (req: Request<IParamProps>, res: Response) => {
-     const cidade = await CidadesProvider.updateById(Number(req.params.id), req.body.nome);
+export const updateById = async (req: Request<IParamProps, {}, IBodyProps>, res: Response) => {
+     const cidade = await CidadesProvider.updateById(Number(req.params.id), req.body);
      if (cidade instanceof Error) {
           res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ erros: { default: cidade.message } });
      }

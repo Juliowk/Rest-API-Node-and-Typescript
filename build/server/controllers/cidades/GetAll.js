@@ -47,7 +47,7 @@ exports.getAllValidation = (0, middlewares_1.validation)((getSchema) => ({
 }));
 const getAll = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.setHeader('access-control-expose-headers', 'x-total-count');
-    const cidades = yield Cidades_1.CidadesProvider.getAll();
+    const cidades = yield Cidades_1.CidadesProvider.getAll(req.query.page, req.query.limit, req.query.filter);
     if (cidades instanceof Error) {
         return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {

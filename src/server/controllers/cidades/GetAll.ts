@@ -19,7 +19,7 @@ export const getAllValidation = validation((getSchema) => ({
 export const getAll = async (req: Request<{}, {}, {}, IQueryProps>, res: Response) => {
      res.setHeader('access-control-expose-headers', 'x-total-count');
 
-     const cidades = await CidadesProvider.getAll();
+     const cidades = await CidadesProvider.getAll(<number>req.query.page, <number>req.query.limit, <string>req.query.filter);
 
      if (cidades instanceof Error) {
           return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

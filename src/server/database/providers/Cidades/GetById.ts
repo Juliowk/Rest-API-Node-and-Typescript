@@ -5,11 +5,10 @@ import { ICidade } from "../../models";
 export const getById = async (id: number): Promise<ICidade | Error> => {
      try {
           const cidade = await Knex<ICidade>(ETableNames.cidade).select().where('id', id).first();
-          if (cidade) {
-               return cidade;
-          }
-          throw new Error("Cidade não encontrada");          
+          if (cidade) return cidade;
+
+          return new Error("Cidade não encontrada");
      } catch (error) {
-          return new Error("Não foi possível encontrar o elemento através do id informado");
+          return new Error("Erro ao consultar cidade");
      }
 };

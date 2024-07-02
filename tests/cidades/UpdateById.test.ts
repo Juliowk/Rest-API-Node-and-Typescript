@@ -1,20 +1,30 @@
-import { StatusCodes } from "http-status-codes";
-import { testServer } from "../jest.setup";
+import { StatusCodes } from 'http-status-codes';
+import { testServer } from '../jest.setup';
+
 
 describe('Cidades - UpdateById', () => {
 
-     it('Atualizar Registro', async () => {
-          const res = await testServer.post('/cidades').send({ nome: "Recife" });
-          expect(res.statusCode).toEqual(StatusCodes.CREATED);
+     it('Atualiza registro', async () => {
 
-          const resUpdateById = await testServer.put(`/cidades/${res.body}`).send({ nome: 'Natal' });
-          expect(resUpdateById.status).toEqual(StatusCodes.NO_CONTENT);
+          const res1 = await testServer
+               .post('/cidades')
+               .send({ nome: 'Caxias do sul' });
+
+          expect(res1.statusCode).toEqual(StatusCodes.CREATED);
+
+          const resAtualizada = await testServer
+               .put(`/cidades/${res1.body}`)
+               .send({ nome: 'Caxias' });
+
+          expect(resAtualizada.statusCode).toEqual(StatusCodes.NO_CONTENT);
      });
-
      it('Tenta atualizar registro que não existe', async () => {
-          const res = await testServer.put("/cidades/9999").send({ nome: "Natal" });
-          expect(res.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
-          expect(res.body).toHaveProperty('errors.default');
-     });
 
+          const res1 = await testServer
+               .put('/cidades/99999')
+               .send({ nome: 'Caxias' });
+
+          expect(res1.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+          expect(res1.body).toHaveProperty('errors.default');
+     });
 });

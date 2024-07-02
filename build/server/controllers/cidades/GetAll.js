@@ -40,14 +40,15 @@ const Cidades_1 = require("../../database/providers/Cidades");
 ;
 exports.getAllValidation = (0, middlewares_1.validation)((getSchema) => ({
     query: getSchema(yup.object().shape({
+        id: yup.number().integer().optional().default(0),
         page: yup.number().optional().moreThan(0),
         limit: yup.number().optional().moreThan(0),
         filter: yup.string().optional()
     }))
 }));
 const getAll = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.setHeader('access-control-expose-headers', 'x-total-count');
-    const cidades = yield Cidades_1.CidadesProvider.getAll(req.query.page, req.query.limit, req.query.filter);
+    const cidades = yield Cidades_1.CidadesProvider.getAll(req.query.page || 1, req.query.limit || 7, req.query.filter || '', Number(req.query.id));
+    const count = yield Cidades_1.CidadesProvider.count(req.query.filter);
     if (cidades instanceof Error) {
         return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
@@ -55,7 +56,17 @@ const getAll = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
         });
     }
-    res.setHeader('x-total-count', cidades.length.toString());
+    ;
+    if (count instanceof Error) {
+        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: count.message
+            }
+        });
+    }
+    ;
+    res.setHeader('access-control-expose-headers', 'x-total-count');
+    res.setHeader('x-total-count', count);
     return res.status(http_status_codes_1.StatusCodes.OK).json(cidades);
 });
 exports.getAll = getAll;

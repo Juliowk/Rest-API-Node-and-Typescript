@@ -43,7 +43,10 @@ exports.deleteValidation = (0, middlewares_1.validation)((getSchema) => ({
     })),
 }));
 const deleteById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cidade = yield Cidades_1.CidadesProvider.deleteById(Number(req.params.id));
+    if (!req.params.id) {
+        return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({ errors: { default: 'O parâmetro "id" precisa ser informado' } });
+    }
+    const cidade = yield Cidades_1.CidadesProvider.deleteById(req.params.id);
     if (cidade instanceof Error) {
         return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ errors: { default: cidade.message } });
     }
